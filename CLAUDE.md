@@ -155,7 +155,7 @@ git commit -m "chore(release): prepare for v1.x.x"
 git tag -a v1.x.x -m "Release v1.x.x"
 
 # 4. 推送到远程
-git push origin master
+git push origin main
 git push origin v1.x.x
 ```
 
