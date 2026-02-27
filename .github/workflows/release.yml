@@ -80,16 +80,23 @@ jobs:
           find . -mindepth 2 -type f -exec mv {} . \;
           # Remove empty subdirectories
           find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
-          # Generate checksums
-          sha256sum * | sort > SHA256SUMS.txt
+          # Generate checksums (exclude SHA256SUMS.txt from input)
+          for file in *; do
+            [ "$file" != "SHA256SUMS.txt" ] && sha256sum "$file"
+          done | sort > SHA256SUMS.txt
+          # Verify checksums file is not empty
+          if [ ! -s SHA256SUMS.txt ]; then
+            echo "Error: SHA256SUMS.txt is empty"
+            exit 1
+          fi
+          # Display checksums for verification
+          cat SHA256SUMS.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            artifacts/*
-            artifacts/SHA256SUMS.txt
-          generate_notes: true
+          files: artifacts/*
+          generate_release_notes: true
           draft: false
           prerelease: false
         env:
