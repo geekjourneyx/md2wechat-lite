@@ -73,10 +73,15 @@ jobs:
         with:
           path: artifacts
 
-      - name: Generate checksums
+      - name: Flatten artifacts and generate checksums
         run: |
           cd artifacts
-          sha256sum * > SHA256SUMS.txt
+          # Move all files from subdirectories to root level
+          find . -mindepth 2 -type f -exec mv {} . \;
+          # Remove empty subdirectories
+          find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +
+          # Generate checksums
+          sha256sum * | sort > SHA256SUMS.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
