@@ -1,0 +1,41 @@
+# Binaries
+md2wx
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output
+*.out
+
+# Go workspace
+go.work
+
+# Vendor
+vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# 二进制文件
+md2wx
+md2wx-*
+*.exe
+*.dll
+*.so
+*.dylib

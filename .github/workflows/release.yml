@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            output: md2wx-linux-amd64
+          - goos: linux
+            goarch: arm64
+            output: md2wx-linux-arm64
+          - goos: darwin
+            goarch: amd64
+            output: md2wx-darwin-amd64
+          - goos: darwin
+            goarch: arm64
+            output: md2wx-darwin-arm64
+          - goos: windows
+            goarch: amd64
+            output: md2wx-windows-amd64.exe
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Build
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 0
+        run: |
+          if [ "$GOOS" = "windows" ]; then
+            go build -ldflags="-s -w -X main.version=${{ github.ref_name }} -X main.buildDate=$(date -u +%Y-%m-%d) -X main.gitCommit=${{ github.sha }}" -o ${{ matrix.output }} ./cli
+          else
+            go build -ldflags="-s -w -X main.version=${{ github.ref_name }} -X main.buildDate=$(date -u +%Y-%m-%d) -X main.gitCommit=${{ github.sha }}" -o ${{ matrix.output }} ./cli
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.output }}
+          path: ${{ matrix.output }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate checksums
+        run: |
+          cd artifacts
+          sha256sum * > SHA256SUMS.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/*
+            artifacts/SHA256SUMS.txt
+          generate_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
