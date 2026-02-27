@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-02-27
+
+### Changed
+- Aligned `README.md` and `skills/md2wechat-lite/SKILL.md` with current CLI behavior.
+- Clarified image input constraints: public URLs only for `--cover-image` and `--images`.
+- Added `AGENTS.md` to standardize agent workflow and release checks.
+
+### Fixed
+- Replaced sensitive-looking example values in CLI help, installer output, and tests.
+- Removed unsupported stdin pipe usage examples for `article-draft`.
+
 ## [1.0.0] - 2025-02-27
 
 ### Added
@@ -29,5 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Global options for API base URL and API key override
 - Configuration priority: CLI args > env vars > config file > defaults
 
-[Unreleased]: https://github.com/geekjourneyx/md2wechat-lite/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/geekjourneyx/md2wechat-lite/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/geekjourneyx/md2wechat-lite/releases/tag/v1.0.1
 [1.0.0]: https://github.com/geekjourneyx/md2wechat-lite/releases/tag/v1.0.0

@@ -4,7 +4,7 @@
 
 set -e
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 REPO="geekjourneyx/md2wechat-lite"
 GITHUB_BASE="https://github.com/${REPO}/releases/download/v${VERSION}"
 RAW_BASE="https://raw.githubusercontent.com/${REPO}/v${VERSION}/cli/scripts"
