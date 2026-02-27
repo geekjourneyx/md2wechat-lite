@@ -5,7 +5,7 @@
 set -e
 
 VERSION="1.0.0"
-REPO="geekjourneyx/md2wx"
+REPO="geekjourneyx/md2wechat-lite"
 GITHUB_BASE="https://github.com/${REPO}/releases/download/v${VERSION}"
 RAW_BASE="https://raw.githubusercontent.com/${REPO}/v${VERSION}/cli/scripts"
 
@@ -146,9 +146,11 @@ main() {
     PLATFORM=$(detect_platform)
     info "检测到平台: $PLATFORM"
 
-    # 确定二进制名称
+    # 确定二进制名称（Release 中的文件名包含平台后缀）
+    RELEASE_BINARY="md2wx-${PLATFORM}"
     BINARY_NAME="md2wx"
-    if [ "$PLATFORM" = "windows-amd64" ] || [ "$PLATFORM" = "windows-386" ]; then
+    if [ "$PLATFORM" = "windows-amd64" ]; then
+        RELEASE_BINARY="md2wx-windows-amd64.exe"
         BINARY_NAME="md2wx.exe"
     fi
 
@@ -162,8 +164,8 @@ main() {
         mkdir -p "$INSTALL_DIR"
     fi
 
-    # 下载 URL
-    DOWNLOAD_URL="${GITHUB_BASE}/${BINARY_NAME}"
+    # 下载 URL（文件名包含平台后缀）
+    DOWNLOAD_URL="${GITHUB_BASE}/${RELEASE_BINARY}"
     info "下载 URL: $DOWNLOAD_URL"
 
     # 临时文件
