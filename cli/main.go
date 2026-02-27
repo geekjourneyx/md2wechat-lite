@@ -32,8 +32,8 @@ var rootCmd = &cobra.Command{
 转换为微信公众号格式，支持图文草稿和小绿书创建。
 
 快速开始:
-  md2wechat-lite config set wechat-appid "wx1234567890abcdef"
-  md2wechat-lite config set api-key "your_api_key"
+  md2wechat-lite config set wechat-appid "wx_appid_example"
+  md2wechat-lite config set api-key "api_key_example"
   md2wechat-lite article-draft --markdown "# 标题\n\n内容" --theme "default"
 
 获取帮助:

@@ -207,8 +207,8 @@ main() {
 
     echo ""
     info "快速开始:"
-    echo "  md2wx config set wechat-appid \"wx1234567890abcdef\""
-    echo "  md2wx config set api-key \"your_api_key\""
+    echo "  md2wx config set wechat-appid \"wx_appid_example\""
+    echo "  md2wx config set api-key \"api_key_example\""
     echo "  md2wx themes list"
 }
 

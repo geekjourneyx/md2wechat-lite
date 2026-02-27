@@ -55,7 +55,7 @@ func TestSave_Load(t *testing.T) {
 
 	// 保存配置
 	cfg := &Config{
-		WechatAppID:     "wx1234567890abcdef",
+		WechatAppID:     "wx_test_appid_example",
 		WechatAppSecret: "test_secret",
 		APIKey:          "test_api_key",
 		APIBaseURL:      "https://test.example.com",
@@ -105,7 +105,7 @@ func TestSet_Get(t *testing.T) {
 	configPath = filepath.Join(configDir, ConfigFile)
 
 	// 设置配置
-	if err := Set("wechat-appid", "wx1234567890abcdef"); err != nil {
+	if err := Set("wechat-appid", "wx_test_appid_example"); err != nil {
 		t.Fatalf("Set() failed: %v", err)
 	}
 
@@ -115,8 +115,8 @@ func TestSet_Get(t *testing.T) {
 		t.Fatalf("Get() failed: %v", err)
 	}
 
-	if value != "wx1234567890abcdef" {
-		t.Errorf("value = %s, want wx1234567890abcdef", value)
+	if value != "wx_test_appid_example" {
+		t.Errorf("value = %s, want wx_test_appid_example", value)
 	}
 }
 

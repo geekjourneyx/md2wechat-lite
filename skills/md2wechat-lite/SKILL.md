@@ -36,20 +36,24 @@ md2wx config set api-key "wme_your_key"
 Convert Markdown to WeChat article:
 
 ```bash
-md2wx article-draft --file article.md --theme bytedance
+md2wx article-draft --file article.md --theme bytedance --cover-image "https://cdn.example.com/cover.jpg"
 ```
 
-Or pipe content:
+Or pass inline Markdown:
 ```bash
-cat article.md | md2wx article-draft --theme elegant-red
+md2wx article-draft --markdown "# Title\n\nContent" --theme elegant-red --cover-image "https://cdn.example.com/cover.jpg"
 ```
+
+Note:
+- `article-draft` does not read from stdin pipe directly.
+- For API compatibility, always provide `--cover-image` with a public URL.
 
 ## Newspic draft
 
 Create image-rich card drafts:
 
 ```bash
-md2wx newspic-draft --title "标题" --content "内容" --images img1.jpg,img2.png
+md2wx newspic-draft --title "标题" --content "内容" --images "https://cdn.example.com/img1.jpg,https://cdn.example.com/img2.png"
 ```
 
 ## Batch upload
@@ -57,8 +61,12 @@ md2wx newspic-draft --title "标题" --content "内容" --images img1.jpg,img2.p
 Upload images and get WeChat CDN URLs:
 
 ```bash
-md2wx batch-upload --images *.jpg
+md2wx batch-upload --images "https://cdn.example.com/a.jpg,https://cdn.example.com/b.jpg"
 ```
+
+Image input constraints:
+- API accepts public image URLs only.
+- Local file paths and glob patterns are not supported.
 
 ## Themes
 
@@ -75,7 +83,7 @@ For theme descriptions: See `cli/pkg/themes/list.go`
 
 ## Configuration
 
-Config file: `~/.md2wx/config.yaml`
+Config file: `~/.md2wx/config.yaml` (stored as `key=value` lines)
 
 **Priority**: Command args > Environment vars > Config file > Defaults
 
@@ -85,6 +93,8 @@ Config file: `~/.md2wx/config.yaml`
 - `MD2WX_API_KEY`
 - `MD2WX_API_BASE_URL`
 - `MD2WX_DEFAULT_THEME`
+- `MD2WX_BACKGROUND_TYPE`
+- `MD2WX_FONT_SIZE`
 
 ## Project structure
 

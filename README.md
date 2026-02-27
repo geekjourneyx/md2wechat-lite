@@ -24,6 +24,11 @@ md2wx CLI · [38+ 精美主题](https://md2wechat.app/theme-gallery) · 支持 [
 - [获取 API Key](https://md2wechat.app/api-docs)
 - [主题预览](https://md2wechat.app/theme-gallery)
 
+图片参数约束（重要）：
+
+- `--cover-image`、`newspic-draft --images`、`batch-upload --images` 仅支持公网 URL
+- 不支持本地文件路径（如 `./a.jpg`）或通配符（如 `*.jpg`）
+
 ---
 
 ## 快速开始
@@ -45,7 +50,7 @@ md2wx config set api-key "wme_your_api_key"
 ### 第一个草稿
 
 ```bash
-md2wx article-draft --markdown "# 欢迎\n\n这是我的第一篇文章！"
+md2wx article-draft --markdown "# 欢迎\n\n这是我的第一篇文章！" --cover-image "https://cdn.example.com/cover.jpg"
 ```
 
 ---
@@ -57,15 +62,17 @@ md2wx article-draft --markdown "# 欢迎\n\n这是我的第一篇文章！"
 Markdown 转 WeChat 排版，一键生成草稿
 
 ```bash
-md2wx article-draft --file article.md --theme bytedance
+md2wx article-draft --file article.md --theme bytedance --cover-image "https://cdn.example.com/cover.jpg"
 ```
+
+说明：部分后端场景会要求封面图，建议始终传入 `--cover-image`，避免 `invalid media_id` 等错误。
 
 ### 🖼️ 小绿书草稿
 
 创建图片文章，支持多图上传
 
 ```bash
-md2wx newspic-draft --title "标题" --content "内容" --images img1.jpg,img2.png
+md2wx newspic-draft --title "标题" --content "内容" --images "https://cdn.example.com/img1.jpg,https://cdn.example.com/img2.png"
 ```
 
 ### 📦 批量上传
@@ -73,7 +80,7 @@ md2wx newspic-draft --title "标题" --content "内容" --images img1.jpg,img2.p
 上传图片到微信素材库，获取永久 URL
 
 ```bash
-md2wx batch-upload --images *.jpg
+md2wx batch-upload --images "https://cdn.example.com/a.jpg,https://cdn.example.com/b.jpg"
 ```
 
 ### 🎨 38+ 主题
@@ -107,7 +114,7 @@ md2wx themes list --verbose
 
 ## 配置说明
 
-配置文件：`~/.md2wx/config.yaml`
+配置文件：`~/.md2wx/config.yaml`（文件内容为 `key=value` 形式）
 
 **配置优先级**：命令行参数 > 环境变量 > 配置文件 > 默认值
 
@@ -145,6 +152,12 @@ xattr -d com.apple.quarantine md2wx
 <summary>草稿创建成功但后台找不到？</summary>
 
 检查 AppID/AppSecret 是否正确，确认登录了对应公众号账号
+</details>
+
+<details>
+<summary>报错 invalid media_id 或创建草稿失败？</summary>
+
+先确认封面图/配图使用的是公网可访问 URL（不是本地路径），并在 `article-draft` 中传入 `--cover-image`。
 </details>
 
 ---
